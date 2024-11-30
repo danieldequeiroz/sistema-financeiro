@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -230,4 +231,238 @@
         });
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Alvará - Banco do Brasil</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .header img {
+            width: 150px; /* Ajuste aqui para a logo */
+            height: auto; /* Mantém a proporção da imagem */
+        }
+        #qrCode {
+            width: 300px; /* Ajuste conforme necessário */
+            height: auto; /* Mantém a proporção */
+            display: block;
+            margin: 20px auto;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form div {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+        form label {
+            flex: 1;
+            text-align: left;
+            margin-right: 10px;
+        }
+        form input, form select {
+            flex: 2;
+            padding: 5px;
+        }
+        button {
+            background-color: #4CAF50; /* Verde */
+            color: white; /* Texto branco */
+            border: none; /* Sem borda */
+            padding: 10px 20px; /* Espaçamento interno */
+            text-align: center; /* Centraliza o texto */
+            text-decoration: none; /* Sem sublinhado */
+            display: inline-block; /* Permite definir largura e altura */
+            font-size: 16px; /* Tamanho da fonte */
+            margin: 4px 2px; /* Espaçamento entre botões */
+            cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+        }
+        #statusPagamento {
+            margin-top: 20px;
+            font-size: 18px;
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    
+    <img src="logoJP.png" alt="Brasão de João Pessoa" style="width: 150px; height: auto;" />
+    <h1>Sistema de Alvará - Banco do Brasil</h1>
+
+    <form id="form-checkout">
+        <div>
+            <label for="alvaraSelect">Escolha o Alvará:</label>
+            <select id="alvaraSelect" required>
+                <option value="" disabled selected>Selecione um Alvará</option>
+                <!-- As opções serão carregadas aqui -->
+            </select>
+        </div>
+        <div>
+            <label for="email">E-mail</label>
+            <input id="form-checkout__email" name="email" type="email" required placeholder="Insira seu e-mail">
+        </div>
+        <div>
+            <label for="identificationType">Tipo de documento</label>
+            <select id="form-checkout__identificationType" name="identificationType" required>
+                <option value="" disabled selected>Selecione um tipo de documento</option>
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+            </select>
+        </div>
+        <div>
+            <label for="identificationNumber">Número do documento</label>
+            <input id="form-checkout__identificationNumber" name="identificationNumber" type="text" required placeholder="Insira o número do documento">
+        </div>
+        <button id="gerarPixBtn">Gerar Chave Pix</button>
+        <button id="verificarPagamentoBtn">Verificar Pagamento</button>
+        <button id="comprovantesBtn">Comprovantes</button>
+        <div id="statusPagamento"></div>
+    </form>
+
+    <div id="pix-container" style="display:none;">
+        <p id="pixValor"></p>
+        <img id="qrCode" style="display:none;" alt="QR Code" />
+        <p id="pixChave"></p>
+        <br>
+        <div id="comprovantePixContainer">
+            <label for="comprovantePix">Adicione o comprovante Pix:</label>
+ <input type="file" id="comprovantePix" accept="image/*,.pdf" />
+            <button id="uploadComprovanteBtn">Enviar Comprovante</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar os alvarás no select
+        function carregarAlvaras() {
+            fetch('/alvaras')
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Erro ao carregar alvarás');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    const alvaraSelect = document.getElementById('alvaraSelect');
+                    data.forEach(alvara => {
+                        const option = document.createElement('option');
+                        option.value = alvara.id; 
+                        option.textContent = alvara.nome;
+                        alvaraSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar alvarás:', error);
+                    alert('Não foi possível carregar a lista de alvarás. Tente novamente mais tarde.');
+                });
+        }
+
+        // Chama a função para carregar os alvarás ao iniciar a página
+        carregarAlvaras();
+
+        document.getElementById('gerarPixBtn').addEventListener('click', (event) => {
+            event.preventDefault(); 
+            const alvaraId = parseInt(document.getElementById('alvaraSelect').value);
+            const email = document.getElementById('form-checkout__email').value;
+            const identificationType = document.getElementById('form-checkout__identificationType').value;
+            const identificationNumber = document.getElementById('form-checkout__identificationNumber').value;
+    
+            fetch('/gerar-pix', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ alvaraId, email, identificationType, identificationNumber }),
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    console.error(data.error);
+                    alert(`Erro: ${data.error}`);
+                } else {
+                    document.getElementById('pixValor').textContent = `Valor: R$${data.valor}`;
+                    document.getElementById('qrCode').src = 'S.png';
+                    document.getElementById('qrCode').style.display = 'block';
+                    document.getElementById('pixChave').textContent = `Chave Pix: ${data.init_point}`;
+                }
+                document.getElementById('pix-container').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro ao gerar chave Pix:', error);
+                alert('Erro ao gerar chave Pix. Tente novamente.');
+            });
+        });
+
+        document.getElementById('verificarPagamentoBtn').addEventListener('click', () => {
+            const paymentId = prompt("Por favor, insira o ID do pagamento:");
+
+            if (paymentId) {
+                fetch('/verificar-pagamento', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ paymentId }),
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                        alert(`Erro: ${data.error}`);
+                    } else {
+                        document.getElementById('statusPagamento').textContent = `Status do Pagamento: ${data.status}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar pagamento:', error);
+                    alert('Erro ao verificar pagamento. Tente novamente.');
+                });
+            } else {
+                alert('ID do pagamento é obrigatório.');
+            }
+        });
+
+        document.getElementById('uploadComprovanteBtn').addEventListener('click', () => {
+            const fileInput = document.getElementById('comprovantePix');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('comprovante', file);
+
+                fetch('/upload-comprovante', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                        alert(`Erro: ${data.error}`);
+                    } else {
+                        alert('Comprovante enviado com sucesso!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar comprovante:', error);
+                    alert('Erro ao enviar comprovante. Tente novamente.');
+                });
+            } else {
+                alert('Por favor, selecione um arquivo para enviar.');
+            }
+        });
+
+        document.getElementById('comprovantesBtn').addEventListener('click', () => {
+                        window.location.href = 'indexcomprovante.html';
+        });
+    </script>
+</body>
+>>>>>>> ca11f75964b6d1c112d89dffdec614d4bacfc7c8
 </html>

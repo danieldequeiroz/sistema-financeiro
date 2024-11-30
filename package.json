@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "name": "sistema-alvara-banco-do-brasil",
     "version": "1.0.0",
@@ -22,3 +23,29 @@
     "author": "Daniel de Queiroz Cavalcanti",
     "license": "MIT"
 }
+=======
+{
+    "name": "sistema-alvara-banco-do-brasil",
+    "version": "1.0.0",
+    "description": "Sistema de Alvará utilizando a API do Banco do Brasil para pagamentos via PIX.",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.2",
+        "multer": "^1.4.5-lts.1",
+        "pdf-parse": "^1.1.1",
+        "qrcode": "^1.5.4"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "author": "Daniel de Queiroz Cavalcanti",
+    "license": "MIT"
+}
+>>>>>>> ca11f75964b6d1c112d89dffdec614d4bacfc7c8

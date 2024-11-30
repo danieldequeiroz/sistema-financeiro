@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -107,4 +108,115 @@
     </script>
     
 </body>
+=======
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprovantes - Sistema de Alvará</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form div {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+        form label {
+            flex: 1;
+            text-align: left;
+            margin-right: 10px;
+        }
+        form input {
+            flex: 2;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enviar Comprovante Pix</h1>
+
+    <form id="comprovanteForm">
+        <div>
+            <label for="comprovantePix">Anexar Comprovante:</label>
+            <input type="file" id="comprovantePix" accept=".pdf" required />
+        </div>
+        <button id="uploadComprovanteBtn">Enviar Comprovante</button>
+    </form>
+
+    <div id="statusPagamentoContainer">
+        <p>Status de Pagamento: <span id="statusPagamento">Pendente</span></p>
+    </div>
+
+    <button id="voltarBtn">Voltar</button>
+
+    <script>
+        document.getElementById('uploadComprovanteBtn').addEventListener('click', (event) => {
+            event.preventDefault(); // Impede o envio do formulário padrão
+            const fileInput = document.getElementById('comprovantePix');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('comprovante', file);
+
+                fetch('/upload-comprovante', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                        alert(`Erro: ${data.error}`);
+                    } else {
+                        alert('Comprovante enviado com sucesso!');
+                        document.getElementById('statusPagamento').textContent = 'Concluído'; // Atualiza o status de pagamento
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar comprovante:', error);
+                    alert('Erro ao enviar comprovante. Tente novamente.');
+                });
+            } else {
+                alert('Por favor, selecione um arquivo para enviar.');
+            }
+        });
+
+        document.getElementById('voltarBtn').addEventListener('click', () => {
+            window.location.href = 'index.html'; // Redireciona de volta para a página anterior
+        });
+
+        fetch('/upload-comprovante', {
+    method: 'POST',
+    body: formData,
+})
+.then(res => res.json())
+.then(data => {
+    if (data.error) {
+        console.error(data.error);
+        alert(`Erro: ${data.error}`);
+    } else {
+        alert('Comprovante enviado com sucesso!');
+        document.getElementById('statusPagamento').textContent = data.status; // Atualiza o status de pagamento
+    }
+})
+.catch(error => {
+    console.error('Erro ao enviar comprovante:', error);
+    alert('Erro ao enviar comprovante. Tente novamente.');
+});
+
+    </script>
+    
+</body>
+>>>>>>> ca11f75964b6d1c112d89dffdec614d4bacfc7c8
 </html>
