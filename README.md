@@ -38,17 +38,15 @@ Este projeto é um sistema de gerenciamento de alvarás que permite o upload de 
 2. Instale as dependências:
    
 
-```bash
-Verify
-Copy code
-npm install
+   ```bash
+   npm install
 
 
 3. Crie um arquivo .env na raiz do projeto e adicione suas credenciais:
 
-```bash
-CLIENT_ID=seu_client_id
-CLIENT_SECRET=seu_client_secret
+   ```bash
+   CLIENT_ID=seu_client_id
+   CLIENT_SECRET=seu_client_secret
 
 4. Certifique-se de que os diretórios uploads/ e ssl.key/ existem e que os certificados SSL estão no diretório correto.
 
