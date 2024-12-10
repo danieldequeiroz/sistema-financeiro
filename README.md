@@ -33,22 +33,26 @@ Este projeto é um sistema de gerenciamento de alvarás que permite o upload de 
    ```bash
    git clone https://github.com/seu-usuario/seu-repositorio.git
    cd seu-repositorio
-   Instale as dependências:
 
-bash
+   
+2. Instale as dependências:
+   
 
+```bash
 Verify
 Copy code
 npm install
-Crie um arquivo .env na raiz do projeto e adicione suas credenciais:
 
-plaintext
 
-Verify
-Copy code
+3. Crie um arquivo .env na raiz do projeto e adicione suas credenciais:
+
+```bash
 CLIENT_ID=seu_client_id
 CLIENT_SECRET=seu_client_secret
-Certifique-se de que os diretórios uploads/ e ssl.key/ existem e que os certificados SSL estão no diretório correto.
 
-## esta rodando dentro do conteiner de Docker : docker run -d -p 3000:3000 --name sistemabancario bancodobrasil
-## docker ps
+4. Certifique-se de que os diretórios uploads/ e ssl.key/ existem e que os certificados SSL estão no diretório correto.
+
+## EXECUÇÃO
+
+1- esta rodando dentro do conteiner de Docker : docker run -d -p 3000:3000 --name sistemabancario bancodobrasil
+2- docker ps
