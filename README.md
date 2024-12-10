@@ -53,4 +53,5 @@ Este projeto é um sistema de gerenciamento de alvarás que permite o upload de 
 ## EXECUÇÃO
 
 1- esta rodando dentro do conteiner de Docker : docker run -d -p 3000:3000 --name sistemabancario bancodobrasil
+
 2- docker ps
