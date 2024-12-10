@@ -48,7 +48,7 @@ Este projeto é um sistema de gerenciamento de alvarás que permite o upload de 
    CLIENT_ID=seu_client_id
    CLIENT_SECRET=seu_client_secret
 
-4. Certifique-se de que os diretórios uploads/ e ssl.key/ existem e que os certificados SSL estão no diretório correto.
+4. Como esta rodando em HTTPS (POR REGRA DO BANCO CENTRAL, TODA API DE BANCO )  PRECISA GERAR O CERTIFICADO HTTPS PESSOAL NO SEU COMPUTADOR. Além disso, Certifique-se de que os diretórios uploads/ e ssl.key/ existem e que os certificados SSL estão no diretório correto.
 
 ## EXECUÇÃO
 
